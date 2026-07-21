@@ -9,31 +9,26 @@ pre: " <b> 1.8. </b> "
 
 ### Week 8 Goals:
 
-* Build an enterprise-scale data platform using AWS's comprehensive analytics and machine learning services.
-* Design and implement a modern data architecture, from Data Lake to real-time analytics pipelines.
-* Master the complete data journey: ingestion, processing, storage, analysis, and visualization with production-grade, scalable, and cost-optimized technical patterns.
+* Practice in-depth labs on Networking, NoSQL DynamoDB, ElastiCache, CloudFront, and Edge Computing.
+* Begin implementing the Chrono Genesis Web Game project: design the main UI framework and build the data model on DynamoDB.
 
-### Tasks to Complete This Week:
-| Day | Tasks                                                                                                                                                                                   | Start Date   | End Date        | Reference                                                  |
-| --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------- | ---------------------------------------------------------- |
-| 2   | - Research standard Data Lake construction methods on AWS <br> - Practice setting up a data repository on Amazon S3 <br> - Practice S3 partitioning and governance <br>                  | 22/06/2026   | 22/06/2026      | https://cloudjourney.awsstudygroup.com/vi/6-dataandanalytic/ |
-| 3   | - Practice Data Lake with real-world data <br> - Set up a security framework, monitor compliance, and check input data quality to ensure Data Lake integrity <br>                         | 23/06/2026   | 23/06/2026      | https://cloudjourney.awsstudygroup.com/vi/6-dataandanalytic/ |
-| 4   | - Study and do Lab: <br>&emsp; + Build ETL/ELT Pipelines <br>&emsp; + Process Batch and Streaming data <br>                                                                              | 24/06/2026   | 24/06/2026      | https://cloudjourney.awsstudygroup.com/vi/6-dataandanalytic/ |
-| 5   | - Explore AWS Data Analytics Services <br> - Deploy modern cloud Data Warehouse patterns and set up real-time data analytics pipelines based on event-driven architecture <br>            | 25/06/2026   | 25/06/2026      | https://cloudjourney.awsstudygroup.com/vi/6-dataandanalytic/ |
-| 6   | - Study and do Lab: <br>&emsp; + Connect processed data sources from Data Lake/Data Warehouse to Amazon QuickSight <br>&emsp; + Data visualization <br>                                   | 26/06/2026   | 26/06/2026      | https://cloudjourney.awsstudygroup.com/vi/6-dataandanalytic/ |
-
+### Tasks to Be Completed This Week:
+| Day | Task                                                                                                                                                                             | Start Date   | End Date        |
+| --- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------- |
+| Mon | Practice labs: Hybrid DNS Management with Amazon Route 53 and Command Line Operations with AWS CLI.                                                                              | 23/06/2026   | 23/06/2026      |
+| Tue | Practice labs: NoSQL Database Essentials with Amazon DynamoDB and In-Memory Caching with Amazon ElastiCache.                                                                     | 24/06/2026   | 24/06/2026      |
+| Wed | Practice labs: Networking on AWS Workshop and Content Delivery with Amazon CloudFront.                                                                                           | 25/06/2026   | 25/06/2026      |
+| Thu | Practice lab: Edge Computing with CloudFront & Lambda@Edge and Windows Workloads on AWS.                                                                                         | 26/06/2026   | 26/06/2026      |
+| Fri | Capstone project implementation: Build the UI framework and design the Database for the Chrono Genesis Web Game (Turn-based card game). <br> Attend FCAJ Community Day.          | 27/06/2026   | 27/06/2026      |
 
 ### Week 8 Results Achieved:
 
-* Successfully built a Data Lake on Amazon S3 and learned how to manage and partition data effectively.
+* Completed 8 advanced hands-on labs: configured hybrid DNS with Route 53, executed AWS CLI commands, operated NoSQL DynamoDB, optimized read performance with ElastiCache, distributed content via CloudFront CDN, and executed code at Edge Nodes (Lambda@Edge).
 
-* Independently moved data from a personal relational database system to the cloud and configured security and quality control layers.
+* Built the initial user interface (UI) framework and fully designed the DynamoDB table schema for the card game project.
 
-* Smoothly operated ETL/ELT pipelines to automate the processing of both static and streaming data.
+* Actively participated in the FCAJ Community Day event to stay updated on the latest technology trends.
 
-* Proficiently applied SQL on modern analytics platforms (Data Warehouse) on AWS.
-
-* Completed the data processing cycle by successfully building intuitive dashboards and professional BI reports with Amazon QuickSight.
 
 
 

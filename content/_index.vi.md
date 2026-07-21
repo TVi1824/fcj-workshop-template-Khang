@@ -7,17 +7,17 @@ chapter: false
 
 # Báo cáo thực tập
 ### Thông tin sinh viên:
-&emsp; **Họ và tên:** Nguyễn Trịnh Tường Vi
+&emsp; **Họ và tên:** Dương Phúc Khang
 
-&emsp; **Số điện thoại:** 0855900997
+&emsp; **Số điện thoại:** 0776199627
 
-&emsp; **Email:** nguyenvii1824@gmail.com
+&emsp; **Email:** oggykhang2004@gmail.com
 
 &emsp; **Trường:** Trường Đại học Công Nghệ TP.HCM (HUTECH)
 
 &emsp; **Ngành:** Công nghệ thông tin
 
-&emsp; **Lớp:** 22DTHH5
+&emsp; **Lớp:** 22DTHC6
 
 &emsp; **Công ty thực tập:** Công ty TNHH Amazon Web Services Việt Nam
 
@@ -25,7 +25,7 @@ chapter: false
 
 &emsp; **Thời gian thực tập:** Từ ngày 05/05/2026 đến ngày 30/07/2026
 
-![Ảnh đại diện của bạn](/images/avatar.png)
+![Ảnh đại diện của bạn](/images/avt.jpg)
 
 
 
