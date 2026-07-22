@@ -6,97 +6,107 @@ chapter: false
 pre: " <b> 2. </b> "
 ---
 
-# Chrono Genesis Game  
+# Chrono Genesis Game
+
 ## Web game đối kháng (turn – base trading cards game) được xây dựng theo kiến trúc Serverless trên nền tảng AWS
 
-### 1. Tóm tắt điều hành  
+### 1. Tóm tắt điều hành
+
 Dự án là Chrono Genesis Game mang thể loại Web game đối kháng (turn – base trading cards game) được xây dựng theo kiến trúc Serverless Real-time Architecture trên nền tảng AWS.
 
 Toàn bộ game sử dụng WebSocket để đồng bộ dữ liệu theo thời gian thực. Các nghiệp vụ của trận đấu được xử lý bởi nhiều AWS Lambda chuyên biệt. Hệ thống sử dụng duy nhất Amazon DynamoDB làm trung tâm dữ liệu toàn diện, đảm nhiệm cả hai vai trò: lưu trữ trạng thái trận đấu (Game State) với đơn vị độ trễ tính bằng milisecond trong thời gian thực, đồng thời lưu trữ dữ liệu lâu dài (User, Deck, Match History, Logs) một cách an toàn và tối ưu chi phí.
 
+### 2. Tuyên bố vấn đề
 
-### 2. Tuyên bố vấn đề  
-*Vấn đề hiện tại*  
+_Vấn đề hiện tại_
+
 - Các hệ thống game thời gian thực truyền thống yêu cầu chi phí duy trì máy chủ liên tục dù không có người chơi.
 
 - Độ trễ mạng ảnh hưởng tiêu cực đến trải nghiệm của tựa game mang tính chiến thuật tính toán liên tục.
 
-*Giải pháp*  
+_Giải pháp_  
 Triển khai Serverless Real-time Architecture qua Amazon API Gateway (WebSocket API) và các hàm AWS Lambda để tạo luồng xử lý độc lập. Quy về một luồng Game Engine duy nhất tương tác trực tiếp với Amazon DynamoDB để cập nhật trạng thái, đảm bảo độ trễ và tiết kiệm chi phí.
 
-### 3. Kiến trúc giải pháp  
+### 3. Kiến trúc giải pháp
+
 Nền tảng áp dụng kiến trúc AWS Serverless để vận hành ứng dụng Web Game đối kháng thẻ bài thời gian thực, có khả năng tự động mở rộng quy mô đáp ứng hàng nghìn người chơi đồng thời. Giao diện người dùng được phân phối qua AWS Amplify và Route 53, được bảo mật và xác thực danh tính bởi Amazon Cognito.
 
 Các kết nối thời gian thực hai chiều (Real-time WebSocket) được định tuyến qua Amazon API Gateway để tương tác trực tiếp với tập hợp các hàm AWS Lambda (Start Match, Process Game Engine, Save Deck, Handle Timeout, End Match) nhằm xử lý toàn bộ game logic tập trung.
 
-Dữ liệu trò chơi và thông tin kết nối được lưu trữ tại Amazon DynamoDB. Ngoài ra, sau khi kết thúc trận đấu, các sự kiện được đẩy vào Amazon SQS để hàm Lambda (Post Match Worker) xử lý bất đồng bộ các tác vụ cập nhật Rank, EXP và lưu lịch sử trận đấu, đảm bảo hệ thống đạt hiệu năng cao và độ trễ cực thấp.  
+Dữ liệu trò chơi và thông tin kết nối được lưu trữ tại Amazon DynamoDB. Ngoài ra, sau khi kết thúc trận đấu, các sự kiện được đẩy vào Amazon SQS để hàm Lambda (Post Match Worker) xử lý bất đồng bộ các tác vụ cập nhật Rank, EXP và lưu lịch sử trận đấu, đảm bảo hệ thống đạt hiệu năng cao và độ trễ cực thấp.
 
-![IoT Weather Station Architecture](/images/2-Proposal/ar1.png)
+![IoT Weather Station Architecture](/images/2-Proposal/ar2.png)
 
+_Dịch vụ AWS sử dụng_
 
-*Dịch vụ AWS sử dụng*  
-- *AWS Amplify*: Lưu trữ và phân phối giao diện web game (React/TypeScript), tự động hóa CI/CD.
+- _AWS Amplify_: Lưu trữ và phân phối giao diện web game (React/TypeScript), tự động hóa CI/CD.
 
-- *AWS Lambda*: Xử lý dữ liệu và kích hoạt Glue jobs (2 hàm).  
+- _AWS Lambda_: Xử lý dữ liệu và kích hoạt Glue jobs (2 hàm).
 
-- *Amazon Route 53*: Giao tiếp với ứng dụng web.  
+- _Amazon Route 53_: Giao tiếp với ứng dụng web.
 
-- *Amazon S3*: Quản lý tên miền và định tuyến lưu lượng truy cập của người chơi đến ứng dụng.  
+- _Amazon S3_: Quản lý tên miền và định tuyến lưu lượng truy cập của người chơi đến ứng dụng.
 
-- *Amazon Cognito*: Xác thực danh tính người chơi, quản lý phiên đăng nhập và cấp phát JWT Token. 
+- _Amazon Cognito_: Xác thực danh tính người chơi, quản lý phiên đăng nhập và cấp phát JWT Token.
 
-- *Amazon API Gateway (WebSocket API)*: Quản lý kết nối thời gian thực hai chiều (real-time) giữa Client và Server.
+- _Amazon API Gateway (WebSocket API)_: Quản lý kết nối thời gian thực hai chiều (real-time) giữa Client và Server.
 
-- *AWS Lambda*: Xử lý game logic tập trung và các tác vụ tính toán.
+- _AWS Lambda_: Xử lý game logic tập trung và các tác vụ tính toán.
 
-- *Amazon SQS*: Hàng đợi bất đồng bộ nhận dữ liệu từ Lambda Engine và xử lý.
+- _Amazon SQS_: Hàng đợi bất đồng bộ nhận dữ liệu từ Lambda Engine và xử lý.
 
-- *Amazon DynamoDB*: Cơ sở dữ liệu NoSQL lưu trữ trạng thái trận đấu, kết nối và dữ liệu người dùng.
+- _Amazon DynamoDB_: Cơ sở dữ liệu NoSQL lưu trữ trạng thái trận đấu, kết nối và dữ liệu người dùng.
 
-- *Security & Monitoring (IAM, KMS, Secrets Manager, CloudWatch, X-Ray)*: Bảo mật phân quyền, quản lý khóa theo dõi nhật ký và giám sát hiệu năng hệ thống.
+- _Security & Monitoring (IAM, KMS, Secrets Manager, CloudWatch, X-Ray)_: Bảo mật phân quyền, quản lý khóa theo dõi nhật ký và giám sát hiệu năng hệ thống.
 
-*Thiết kế thành phần*  
-- *Định tuyến real-time*: Amazon API Gateway kết hợp Route 53 quản lý kết nối WebSocket hai chiều giữa người chơi và hệ thống.   
+_Thiết kế thành phần_
 
-- *Xử lý game logic*: Tập hợp các hàm AWS Lambda đóng vai trò Game Engine tập trung.
+- _Định tuyến real-time_: Amazon API Gateway kết hợp Route 53 quản lý kết nối WebSocket hai chiều giữa người chơi và hệ thống.
 
-- *Xử lý bất đồng bộ*: Amazon SQS nhận sự kiện kết thúc trận đấu để Lambda worker tự động tính toán Rank, EXP và lưu lịch sử.
+- _Xử lý game logic_: Tập hợp các hàm AWS Lambda đóng vai trò Game Engine tập trung.
 
-- *Xử lý dữ liệu*: Amazon DynamoDB lưu trạng thái bàn cờ, thông tin kết nối và hồ sơ người chơi.  
+- _Xử lý bất đồng bộ_: Amazon SQS nhận sự kiện kết thúc trận đấu để Lambda worker tự động tính toán Rank, EXP và lưu lịch sử.
 
-- *Giao diện web*: Xây dựng bằng React / TypeScript, đóng gói và phân phối qua mạng lưới CDN của AWS Amplify.
+- _Xử lý dữ liệu_: Amazon DynamoDB lưu trạng thái bàn cờ, thông tin kết nối và hồ sơ người chơi.
 
-- *Quản lý người dùng*: Sử dụng Amazon Cognito User Pool để quản lý toàn bộ chu trình của tài khoản (đăng ký, xác thực, đổi mật khẩu và thu hồi phiên đăng nhập).
+- _Giao diện web_: Xây dựng bằng React / TypeScript, đóng gói và phân phối qua mạng lưới CDN của AWS Amplify.
 
-### 4. Triển khai kỹ thuật  
-*Các giai đoạn triển khai*  
+- _Quản lý người dùng_: Sử dụng Amazon Cognito User Pool để quản lý toàn bộ chu trình của tài khoản (đăng ký, xác thực, đổi mật khẩu và thu hồi phiên đăng nhập).
+
+### 4. Triển khai kỹ thuật
+
+_Các giai đoạn triển khai_
+
 1. Khởi tạo hạ tầng: Triển khai môi trường, tên miền và thiết lập CI/CD thông qua AWS Amplify.
 
 2. Kết nối & Xác thực: Cấu hình Amazon Cognito cho người dùng và thiết lập luồng kết nối WebSocket
-qua API Gateway.
+   qua API Gateway.
 
 3. Xây dựng Game Engine: Lập trình các hàm Lambda lõi (Start Match, Process Action, End Match)
-xử lý logic thẻ bài.
+   xử lý logic thẻ bài.
 
 4. Hậu kỳ trận đấu: Cấu hình hàng đợi SQS và Lambda Worker để xử lý điểm Rank, lịch sử mà không gây nghẽn hệ thống.
 
 5. Kiểm thử & Tối ưu: Giám sát X-Ray, CloudWatch, tối ưu bảo mật với WAF/IAM và thực hiện kiểm thử tải (Stress Test).
 
-*Yêu cầu kỹ thuật*  
-- *Hạ tầng hệ thống*: AWS Amplify (Hosting & CI/CD), GitHub, Route 53 (tên miền), IAM và VPC để triển khai, quản lý và bảo mật hệ thống.  
+_Yêu cầu kỹ thuật_
 
-- *Nền tảng game*: Amazon Cognito (xác thực JWT), API Gateway (WebSocket), AWS Lambda (xử lý logic game), DynamoDB (lưu dữ liệu người chơi, trận đấu, bộ bài), Amazon SQS (xử lý tác vụ hậu kỳ), CloudWatch và X-Ray (giám sát), AWS WAF (bảo mật). Frontend sử dụng React kết nối WebSocket để đồng bộ trạng thái trận đấu theo thời gian thực.
+- _Hạ tầng hệ thống_: AWS Amplify (Hosting & CI/CD), GitHub, Route 53 (tên miền), IAM và VPC để triển khai, quản lý và bảo mật hệ thống.
 
-### 5. Lộ trình & Mốc triển khai  
-- *Trước thực tập (Tháng 0)*: 1 tháng lên kế hoạch.
-    - Tháng 1: Tìm hiểu và học các dịch vụ AWS, thực hành các bài Lab để cũng cố kiến thức.  
-    - Tháng 2: Thiết kế và điều chỉnh kiến trúc.  
-    - Tháng 3: Triển khai, kiểm thử, đưa vào sử dụng.  
-- *Sau triển khai*: Nghiên cứu và phát triển thêm các chức năng mới. 
+- _Nền tảng game_: Amazon Cognito (xác thực JWT), API Gateway (WebSocket), AWS Lambda (xử lý logic game), DynamoDB (lưu dữ liệu người chơi, trận đấu, bộ bài), Amazon SQS (xử lý tác vụ hậu kỳ), CloudWatch và X-Ray (giám sát), AWS WAF (bảo mật). Frontend sử dụng React kết nối WebSocket để đồng bộ trạng thái trận đấu theo thời gian thực.
 
-### 6. Ước tính ngân sách   
+### 5. Lộ trình & Mốc triển khai
 
-*Chi phí hạ tầng*  
+- _Trước thực tập (Tháng 0)_: 1 tháng lên kế hoạch.
+  - Tháng 1: Tìm hiểu và học các dịch vụ AWS, thực hành các bài Lab để cũng cố kiến thức.
+  - Tháng 2: Thiết kế và điều chỉnh kiến trúc.
+  - Tháng 3: Triển khai, kiểm thử, đưa vào sử dụng.
+- _Sau triển khai_: Nghiên cứu và phát triển thêm các chức năng mới.
+
+### 6. Ước tính ngân sách
+
+_Chi phí hạ tầng_
+
 - AWS Amplify: 0,00 - 0,02 USD/tháng (Hosting khoảng 500 MB, CI/CD vài lần triển khai, nằm trong Free Tier 12 tháng).
 
 - Amazon Route 53: 0,50 USD/tháng (01 Hosted Zone, chưa tính phí tên miền).
@@ -123,30 +133,36 @@ xử lý logic thẻ bài.
 
 - AWS WAF: 0,00 USD/tháng (nếu tạm tắt) / ≥ 5,00 USD/tháng (nếu bật 01 Web ACL để lọc các request độc hại)
 
-*Tổng chi phí*:
+_Tổng chi phí_:
+
 - Chi phí hạ tầng MVP (Chưa tính WAF): khoảng 0,54 USD/tháng (~6,5 USD/năm).
 
-- Chi phí hạ tầng MVP (Có WAF): khoảng 5,54 USD/tháng (~66,5 USD/năm).    
+- Chi phí hạ tầng MVP (Có WAF): khoảng 5,54 USD/tháng (~66,5 USD/năm).
 
-### 7. Đánh giá rủi ro  
-*Ma trận rủi ro*  
-- Lambda Cold Start gây giật lag lượt đi đầu: Khả năng xảy ra trung bình, mức độ ảnh hưởng trung bình.  
+### 7. Đánh giá rủi ro
 
-- Mất kết nối mạng WebSocket từ phía người chơi: Khả năng xảy ra cao, mức độ ảnh hưởng cao.  
+_Ma trận rủi ro_
+
+- Lambda Cold Start gây giật lag lượt đi đầu: Khả năng xảy ra trung bình, mức độ ảnh hưởng trung bình.
+
+- Mất kết nối mạng WebSocket từ phía người chơi: Khả năng xảy ra cao, mức độ ảnh hưởng cao.
 
 - Chạm giới hạn AWS Quota: Khả năng xảy ra thấp, mức độ ảnh hưởng rất cao.
 
-*Chiến lược giảm thiểu*  
+_Chiến lược giảm thiểu_
+
 - Giảm thiểu Lambda Cold Start: Tối ưu thời gian khởi động bằng cách giảm kích thước package, tái sử dụng kết nối và chỉ cấu hình Provisioned Concurrency cho các Lambda xử lý thời gian thực (Process Game Engine) khi hệ thống có lưu lượng truy cập cao. Giải pháp này giúp giảm đáng kể độ trễ ở lượt đi đầu tiên nhưng vẫn tối ưu chi phí vận hành.
 
 - Giảm thiểu mất kết nối WebSocket: Xây dựng cơ chế Auto-Reconnect ở Frontend kết hợp gửi cảnh báo định kỳ để phát hiện mất kết nối. Khi người chơi kết nối lại, API Gateway và Lambda cập nhật Connection ID mới vào DynamoDB, sau đó đồng bộ lại Game State hiện tại để người chơi tiếp tục trận đấu mà không cần tạo phiên mới.
 
-- Giảm thiểu chạm giới hạn AWS Quota: Thiết lập CloudWatch Metrics và CloudWatch Alarms để giám sát số lượng kết nối WebSocket, Lambda Invocations và các tài nguyên quan trọng. Khi tài nguyên đạt khoảng 70–80% giới hạn, hệ thống gửi cảnh báo qua email để quản trị viên chủ động yêu cầu tăng hạn mức trước khi ảnh hưởng đến người dùng. 
+- Giảm thiểu chạm giới hạn AWS Quota: Thiết lập CloudWatch Metrics và CloudWatch Alarms để giám sát số lượng kết nối WebSocket, Lambda Invocations và các tài nguyên quan trọng. Khi tài nguyên đạt khoảng 70–80% giới hạn, hệ thống gửi cảnh báo qua email để quản trị viên chủ động yêu cầu tăng hạn mức trước khi ảnh hưởng đến người dùng.
 
-*Kế hoạch dự phòng*  
-- Mở rộng tài nguyên: Khi tài nguyên AWS tiệm cận Service Quota, quản trị viên yêu cầu tăng hạn mức và tạm thời giới hạn tạo trận đấu mới, ưu tiên tài nguyên cho các trận đang diễn ra nhằm đảm bảo tính ổn định của hệ thống.  
+_Kế hoạch dự phòng_
 
-### 8. Kết quả kỳ vọng  
-- *Cải tiến kỹ thuật*: Xây dựng thành công luồng Game Engine hoàn toàn trên nền tảng Serverless, thay thế máy chủ duy trì liên tục giúp tiết kiệm chi phí. 
+- Mở rộng tài nguyên: Khi tài nguyên AWS tiệm cận Service Quota, quản trị viên yêu cầu tăng hạn mức và tạm thời giới hạn tạo trận đấu mới, ưu tiên tài nguyên cho các trận đang diễn ra nhằm đảm bảo tính ổn định của hệ thống.
 
-- *Giá trị dài hạn*: Nền tảng dữ liệu dùng để phát triển game, có thể tái sử dụng cho các dự án tương lai.
+### 8. Kết quả kỳ vọng
+
+- _Cải tiến kỹ thuật_: Xây dựng thành công luồng Game Engine hoàn toàn trên nền tảng Serverless, thay thế máy chủ duy trì liên tục giúp tiết kiệm chi phí.
+
+- _Giá trị dài hạn_: Nền tảng dữ liệu dùng để phát triển game, có thể tái sử dụng cho các dự án tương lai.
